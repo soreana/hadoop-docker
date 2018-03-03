@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+	<property>
+		<name>mapreduce.framework.name</name>
+		<value>yarn</value>
+		<description>Execution framework set to Hadoop YARN</description>
+	</property>
+
+	<property>
+		<name>mapreduce.jobhistory.address</name>
+		<value>127.0.0.1:10020</value>
+	</property>
+
+	<property>
+		<name>mapreduce.jobhistory.webapp.address</name>
+		<value>127.0.0.1:19888</value>
+	</property>
+
+</configuration>
+
+
