@@ -7,7 +7,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get update && \
-    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections && \
+    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
     apt-get install -y oracle-java8-installer && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://archive.apache.org/dist/hadoop/core/hadoop-2.7.1/hadoop-2.7.1.tar.gz && \
@@ -38,6 +38,6 @@ RUN mkdir -p /app/hadoop/tmp && \
     hdfs namenode -format && \
     chmod +x $HADOOP_HOME/etc/hadoop/start.sh
 
-ADD WordCount.java local/mahdiz.big ./
+ADD WordCount.java ./
 
 ENTRYPOINT $HADOOP_HOME/etc/hadoop/start.sh && /bin/bash
