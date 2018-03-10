@@ -38,6 +38,6 @@ RUN mkdir -p /app/hadoop/tmp && \
     hdfs namenode -format && \
     chmod +x $HADOOP_HOME/etc/hadoop/start.sh
 
-ADD WordCount.java ./
+ADD WordCount.java mahdiz.big ./
 
 ENTRYPOINT $HADOOP_HOME/etc/hadoop/start.sh && /bin/bash
