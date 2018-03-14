@@ -34,10 +34,10 @@ info('*** Creating links\n')
 info('*** Starting network\n')
 net.start()
 info('*** Testing connectivity\n')
-net.ping([d21, d22])
+# you can test connectivity between nodes with:
+# net.ping([d21, d22])
 
 info('*** Setup nodes\n')
-d21.cmd()
 
 # start ssh on hosts
 for host in net.hosts:
