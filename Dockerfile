@@ -33,7 +33,7 @@ ARG RECONFIG=1
 ENV HADOOP_HOME=/usr/local/hadoop \
     PATH="${PATH}:/usr/local/hadoop/bin"
 
-COPY start.sh hadoop-env.sh mapred-site.xml yarn-site.xml yarn-site.multi-node.xml hdfs-site.xml hdfs-site.multi-node.xml core-site.xml core-site.multi-node.xml $HADOOP_HOME/etc/hadoop/
+COPY start.sh hadoop-env.sh mapred-site.xml mapred-site.multi-node.xml yarn-site.xml yarn-site.multi-node.xml hdfs-site.xml hdfs-site.multi-node.xml core-site.xml core-site.multi-node.xml $HADOOP_HOME/etc/hadoop/
 
 RUN mkdir -p /app/hadoop/tmp && \
     hdfs namenode -format && \

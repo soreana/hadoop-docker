@@ -1,5 +1,8 @@
 #!/bin/bash
 
+export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")
+export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar
+
 # set cluster's hosts IP
 HADOOP_HOSTS="${HADOOP_HOSTS:-127.0.0.1 master}"
 echo -e "\n#Hadoop hosts" >> /etc/hosts
@@ -36,22 +39,25 @@ echo ""
 
 service ssh start
 
-if [ "${IS_SINGLE}" == false ] && [ "${MY_ROLE}" == "master" ]; then
-    echo "$HADOOP_HOSTS" | \
-        sed -e $'s/,/\\\n/g' | \
-        awk '{print $2}' | \
-        while read line ; do
-            ssh-keyscan ${line} >> ~/.ssh/known_hosts
-        done
-
+if [ "${IS_SINGLE}" == false ]; then
     mv $HADOOP_HOME/etc/hadoop/yarn-site.multi-node.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml
     mv $HADOOP_HOME/etc/hadoop/hdfs-site.multi-node.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml
     mv $HADOOP_HOME/etc/hadoop/core-site.multi-node.xml $HADOOP_HOME/etc/hadoop/core-site.xml
+    mv $HADOOP_HOME/etc/hadoop/mapred-site.multi-node.xml $HADOOP_HOME/etc/hadoop/mapred-site.xml
 
-    $HADOOP_HOME/sbin/start-dfs.sh && \
-        $HADOOP_HOME/sbin/start-yarn.sh && \
-        hdfs dfs -mkdir -p /user/sina/data && \
-        hdfs dfs -copyFromLocal /home/mahdiz.big /user/sina/data
+    if [ "${MY_ROLE}" == "master" ]; then
+        echo "$HADOOP_HOSTS" | \
+            sed -e $'s/,/\\\n/g' | \
+            awk '{print $2}' | \
+            while read line ; do
+                ssh-keyscan ${line} >> ~/.ssh/known_hosts
+            done
+
+        $HADOOP_HOME/sbin/start-dfs.sh && \
+            $HADOOP_HOME/sbin/start-yarn.sh && \
+            hdfs dfs -mkdir -p /user/sina/data && \
+            hdfs dfs -copyFromLocal /home/mahdiz.big /user/sina/data
+    fi
 fi
 
 if [ "${IS_SINGLE}" == true ]; then
@@ -66,5 +72,3 @@ fi
 mv ~/.bashrc ~/.bashrc.old
 echo "color_prompt=yes" > ~/.bashrc
 cat ~/.bashrc.old >> ~/.bashrc
-echo 'export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")' >> ~/.bashrc
-echo 'export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar' >> ~/.bashrc

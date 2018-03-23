@@ -43,8 +43,8 @@ docker run --net hadoop-cluster --ip 172.20.0.22 -it ubuntu bash
 
 At last, run slave and master nodes:
 ```
-docker run --net hadoop-cluster --ip 172.20.0.11 -it -e HADOOP_HOSTS="172.20.0.10 master, 172.20.0.11 slave1" cnp2
-docker run --net hadoop-cluster --ip 172.20.0.10 -it -e HADOOP_HOSTS="172.20.0.10 master, 172.20.0.11 slave1" -e MY_ROLE="master" cnp2
+docker run --net hadoop-cluster --ip 172.20.0.11 -it -e HADOOP_HOSTS="172.20.0.10 master,172.20.0.11 slave1" cnp2
+docker run --net hadoop-cluster --ip 172.20.0.10 -it -e HADOOP_HOSTS="172.20.0.10 master,172.20.0.11 slave1" -e MY_ROLE="master" cnp2
 ```
 
 # Run Map-Reduce
