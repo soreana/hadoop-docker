@@ -26,7 +26,7 @@ else
 fi
 
 echo "Host Numbers: ${HOST_NUMBERS}"
-if [[ ${IS_SINGLE} ]]; then
+if [[ ${IS_SINGLE} == true ]]; then
     echo "Mode: single-node"
 else
     echo "Mode: multi-node"
