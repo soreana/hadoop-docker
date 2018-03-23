@@ -44,7 +44,24 @@ docker run --net hadoop-cluster --ip 172.20.0.22 -it ubuntu bash
 At last, run slave and master nodes:
 ```
 docker run --net hadoop-cluster --ip 172.20.0.11 -it -e HADOOP_HOSTS="172.20.0.10 master, 172.20.0.11 slave1" cnp2
-docker run --net hadoop-cluster --ip 172.20.0.10 -it -e HADOOP_HOSTS="172.20.0.10 master,172.20.0.11 slave1" -e MY_ROLE="master" cnp2
+docker run --net hadoop-cluster --ip 172.20.0.10 -it -e HADOOP_HOSTS="172.20.0.10 master, 172.20.0.11 slave1" -e MY_ROLE="master" cnp2
 ```
 
 # Run Map-Reduce
+
+1. Compile
+```
+hadoop com.sun.tools.javac.Main WordCount.java
+```
+
+2. Create Jar file
+```
+jar cf wc.jar WordCount*.class
+```
+
+3. Run
+```
+hadoop jar wc.jar WordCount /user/sina/data /user/sina/output
+```
+
+You can monitor progress on **MapReduce Job Monitoring** (port 8088) and **HDFS Monitoring** (port 50070). Also, you may use **Datanode** (port 50075) or **MapReduce JobHistory Server** (port 19888).
