@@ -44,6 +44,10 @@ if [ "${IS_SINGLE}" == false ] && [ "${MY_ROLE}" == "master" ]; then
             ssh-keyscan ${line} >> ~/.ssh/known_hosts
         done
 
+    mv $HADOOP_HOME/etc/hadoop/yarn-site.multi-node.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml
+    mv $HADOOP_HOME/etc/hadoop/hdfs-site.multi-node.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml
+    mv $HADOOP_HOME/etc/hadoop/core-site.multi-node.xml $HADOOP_HOME/etc/hadoop/core-site.xml
+
     $HADOOP_HOME/sbin/start-dfs.sh && \
         $HADOOP_HOME/sbin/start-yarn.sh && \
         hdfs dfs -mkdir -p /user/sina/data && \
