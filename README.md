@@ -65,3 +65,10 @@ hadoop jar wc.jar WordCount /user/sina/data /user/sina/output
 ```
 
 You can monitor progress on **MapReduce Job Monitoring** (port 8088) and **HDFS Monitoring** (port 50070). Also, you may use **Datanode** (port 50075) or **MapReduce JobHistory Server** (port 19888).
+
+4. See Output
+```
+hdfs dfs -ls /user/sina/output
+```
+
+To see a list of available File System Shell's commands, see [here](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html).
