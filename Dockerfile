@@ -4,7 +4,7 @@ LABEL maintainer="esterlinkof@gmail.com"
 WORKDIR /home/
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils && \
+    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils net-tools curl nano && \
     add-apt-repository ppa:webupd8team/java && \
     apt-get update && \
     echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
@@ -24,7 +24,13 @@ RUN apt-get update && \
     mkdir -p /root/.ssh/ && \
     ssh-keyscan localhost  >> ~/.ssh/known_hosts && \
     ssh-keyscan 0.0.0.0  >> ~/.ssh/known_hosts && \
-    echo "# Some convenient aliases and functions for running Hadoop-related commands\nunalias fs &> /dev/null\nalias fs=\"hadoop fs\"\nunalias hls &> /dev/null\nalias hls=\"fs -ls\"" >> ~/.bashrc
+    echo "\
+# Some convenient aliases and functions for running Hadoop-related commands\n\
+unalias fs &> /dev/null\n\
+alias fs=\"hadoop fs\"\n\
+unalias hls &> /dev/null\n\
+alias hls=\"fs -ls\"\
+    " >> ~/.bashrc
 
 # set up environment variables and conffig files
 ARG RECONFIG=1
