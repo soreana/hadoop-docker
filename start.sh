@@ -16,8 +16,7 @@ MY_ROLE="${MY_ROLE:-slave}"
 HOST_NUMBERS=`echo ${HADOOP_HOSTS} | tr -cd , | wc -c`
 let "HOST_NUMBERS=HOST_NUMBERS+1"
 
-if [ ${HOST_NUMBERS} -gt 1 ]
-then
+if [ ${HOST_NUMBERS} -gt 1 ]; then
     # multi node initialization
     IS_SINGLE=false
 else
@@ -26,9 +25,14 @@ else
     IS_SINGLE=true
 fi
 
-echo ${HOST_NUMBERS}
-echo ${IS_SINGLE}
-echo ${MY_ROLE}
+echo "Host Numbers: ${HOST_NUMBERS}"
+if [[ ${IS_SINGLE} ]]; then
+    echo "Mode: single-node"
+else
+    echo "Mode: multi-node"
+fi
+echo "Role: ${MY_ROLE}"
+echo ""
 
 service ssh start
 
@@ -36,10 +40,9 @@ if [ "${IS_SINGLE}" == false ] && [ "${MY_ROLE}" == "master" ]; then
     echo "$HADOOP_HOSTS" | \
         sed -e $'s/,/\\\n/g' | \
         awk '{print $2}' | \
-        while read line ; do ssh-keyscan ${line} >> ~/.ssh/known_hosts ; done
-    mv $HADOOP_HOME/etc/hadoop/yarn-site.multi-node.xml $HADOOP_HOME/etc/hadoop/yarn-site.xml 
-    mv $HADOOP_HOME/etc/hadoop/core-site.multi-node.xml $HADOOP_HOME/etc/hadoop/core-site.xml 
-    mv $HADOOP_HOME/etc/hadoop/hdfs-site.multi-node.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml 
+        while read line ; do
+            ssh-keyscan ${line} >> ~/.ssh/known_hosts
+        done
 
     $HADOOP_HOME/sbin/start-dfs.sh && \
         $HADOOP_HOME/sbin/start-yarn.sh && \
