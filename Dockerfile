@@ -32,7 +32,7 @@ ENV HADOOP_HOME=/usr/local/hadoop \
     JAVA_HOME=/usr/lib/jvm/java-8-oracle \
     HADOOP_CLASSPATH=/usr/lib/jvm/java-8-oracle/lib/tools.jar \
     PATH="${PATH}:/usr/local/hadoop/bin"
-COPY start.sh yarn-site.xml hadoop-env.sh hdfs-site.xml mapred-site.xml core-site.xml $HADOOP_HOME/etc/hadoop/
+COPY start.sh yarn-site.xml hadoop-env.sh hdfs-site.xml mapred-site.xml core-site.xml yarn-site.multi-node.xml core-site.multi-node.xml hdfs-site.multi-node.xml $HADOOP_HOME/etc/hadoop/
 
 RUN mkdir -p /app/hadoop/tmp && \
     hdfs namenode -format && \
