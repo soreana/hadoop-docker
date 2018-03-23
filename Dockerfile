@@ -4,11 +4,7 @@ LABEL maintainer="esterlinkof@gmail.com"
 WORKDIR /home/
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils net-tools curl nano && \
-    add-apt-repository ppa:webupd8team/java && \
-    apt-get update && \
-    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
-    apt-get install -y oracle-java8-installer && \
+    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils net-tools curl nano default-jre default-jdk && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://archive.apache.org/dist/hadoop/core/hadoop-2.7.1/hadoop-2.7.1.tar.gz && \
     mv ./hadoop-2.7.1.tar.gz /usr/local/hadoop.tar.gz && \
@@ -35,8 +31,6 @@ alias hls=\"fs -ls\"\
 # set up environment variables and conffig files
 ARG RECONFIG=1
 ENV HADOOP_HOME=/usr/local/hadoop \
-    JAVA_HOME=/usr/lib/jvm/java-8-oracle \
-    HADOOP_CLASSPATH=/usr/lib/jvm/java-8-oracle/lib/tools.jar \
     PATH="${PATH}:/usr/local/hadoop/bin"
 COPY start.sh yarn-site.xml hadoop-env.sh hdfs-site.xml mapred-site.xml core-site.xml $HADOOP_HOME/etc/hadoop/
 

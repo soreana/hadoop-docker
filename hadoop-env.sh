@@ -24,7 +24,7 @@
 # The java implementation to use.
 export JAVA_HOME=${JAVA_HOME}
 if [[ -z $JAVA_HOME ]]; then
-  export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:bin/java::")
+  export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")
 fi
 
 # The jsvc implementation to use. Jsvc is required to run secure datanodes
