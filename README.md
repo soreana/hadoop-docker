@@ -20,7 +20,7 @@ docker build -t cnp2 --build-arg RECONFIG=$(date +%s) .
 ```
 
 # Run the image
-There is two way to run hadoop single-node and multi-node (default config of image is single-node). You can change image 
+There are two ways to run hadoop single-node and multi-node (default config of image is single-node). You can change image 
  behavior with some environment variable and change it to multi-node.
  
 ## Single-node
