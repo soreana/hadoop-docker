@@ -69,5 +69,5 @@ fi
 mv ~/.bashrc ~/.bashrc.old
 echo "color_prompt=yes" > ~/.bashrc
 cat ~/.bashrc.old >> ~/.bashrc
-echo 'export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")'
+echo 'export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")' >> ~/.bashrc
 echo 'export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar' >> ~/.bashrc
