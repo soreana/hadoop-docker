@@ -4,7 +4,7 @@ LABEL maintainer="esterlinkof@gmail.com"
 WORKDIR /home/
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils net-tools curl nano default-jre default-jdk && \
+    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils net-tools curl nano default-jre default-jdk iproute2 iputils-ping && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://archive.apache.org/dist/hadoop/core/hadoop-2.7.1/hadoop-2.7.1.tar.gz && \
     mv ./hadoop-2.7.1.tar.gz /usr/local/hadoop.tar.gz && \
