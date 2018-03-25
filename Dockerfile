@@ -26,6 +26,9 @@ RUN apt-get update && \
     ssh-keyscan 0.0.0.0  >> ~/.ssh/known_hosts && \
     echo "# Some convenient aliases and functions for running Hadoop-related commands\nunalias fs &> /dev/null\nalias fs=\"hadoop fs\"\nunalias hls &> /dev/null\nalias hls=\"fs -ls\"" >> ~/.bashrc
 
+RUN apt-get update &&\
+	apt-get install -y net-tools iproute2 iputils-ping 
+
 # set up environment variables and conffig files
 ARG RECONFIG=1
 ENV HADOOP_HOME=/usr/local/hadoop \
