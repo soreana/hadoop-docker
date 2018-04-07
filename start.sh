@@ -32,7 +32,7 @@ echo ${MY_ROLE}
 
 service ssh start
 
-if [ "${IS_SINGLE}" == false ] && [ "${MY_ROLE}" == "master" ]; then
+if [ "${IS_SINGLE}" == false ]; then
     echo "$HADOOP_HOSTS" | \
         sed -e $'s/,/\\\n/g' | \
         awk '{print $2}' | \
@@ -41,10 +41,12 @@ if [ "${IS_SINGLE}" == false ] && [ "${MY_ROLE}" == "master" ]; then
     mv $HADOOP_HOME/etc/hadoop/core-site.multi-node.xml $HADOOP_HOME/etc/hadoop/core-site.xml 
     mv $HADOOP_HOME/etc/hadoop/hdfs-site.multi-node.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml 
 
-    $HADOOP_HOME/sbin/start-dfs.sh && \
-        $HADOOP_HOME/sbin/start-yarn.sh && \
-        hdfs dfs -mkdir -p /user/sina/data && \
-        hdfs dfs -copyFromLocal /home/mahdiz.big /user/sina/data
+    if [ "${MY_ROLE}" == "master" ]; then
+    	$HADOOP_HOME/sbin/start-dfs.sh && \
+            $HADOOP_HOME/sbin/start-yarn.sh && \
+            hdfs dfs -mkdir -p /user/sina/data && \
+            hdfs dfs -copyFromLocal /home/mahdiz.big /user/sina/data
+    fi
 fi
 
 if [ "${IS_SINGLE}" == true ]; then
