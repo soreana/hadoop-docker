@@ -4,11 +4,7 @@ LABEL maintainer="esterlinkof@gmail.com"
 WORKDIR /home/
 
 RUN apt-get update && \
-    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils && \
-    add-apt-repository ppa:webupd8team/java && \
-    apt-get update && \
-    echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections && \
-    apt-get install -y oracle-java8-installer && \
+    apt-get install --no-install-recommends -y wget ssh rsync software-properties-common python-software-properties debconf-utils net-tools curl nano default-jre default-jdk iproute2 iputils-ping && \
     rm -rf /var/lib/apt/lists/* && \
     wget https://archive.apache.org/dist/hadoop/core/hadoop-2.7.1/hadoop-2.7.1.tar.gz && \
     mv ./hadoop-2.7.1.tar.gz /usr/local/hadoop.tar.gz && \
@@ -24,23 +20,25 @@ RUN apt-get update && \
     mkdir -p /root/.ssh/ && \
     ssh-keyscan localhost  >> ~/.ssh/known_hosts && \
     ssh-keyscan 0.0.0.0  >> ~/.ssh/known_hosts && \
-    echo "# Some convenient aliases and functions for running Hadoop-related commands\nunalias fs &> /dev/null\nalias fs=\"hadoop fs\"\nunalias hls &> /dev/null\nalias hls=\"fs -ls\"" >> ~/.bashrc
-
-RUN apt-get update &&\
-	apt-get install -y net-tools iproute2 iputils-ping 
+    echo "\
+# Some convenient aliases and functions for running Hadoop-related commands\n\
+unalias fs &> /dev/null\n\
+alias fs=\"hadoop fs\"\n\
+unalias hls &> /dev/null\n\
+alias hls=\"fs -ls\"\
+" >> ~/.bashrc
 
 # set up environment variables and conffig files
 ARG RECONFIG=1
 ENV HADOOP_HOME=/usr/local/hadoop \
-    JAVA_HOME=/usr/lib/jvm/java-8-oracle \
-    HADOOP_CLASSPATH=/usr/lib/jvm/java-8-oracle/lib/tools.jar \
     PATH="${PATH}:/usr/local/hadoop/bin"
-COPY start.sh yarn-site.xml hadoop-env.sh hdfs-site.xml mapred-site.xml core-site.xml yarn-site.multi-node.xml core-site.multi-node.xml hdfs-site.multi-node.xml $HADOOP_HOME/etc/hadoop/
+
+COPY start.sh hadoop-env.sh mapred-site.xml mapred-site.multi-node.xml yarn-site.xml yarn-site.multi-node.xml hdfs-site.xml hdfs-site.multi-node.xml core-site.xml core-site.multi-node.xml $HADOOP_HOME/etc/hadoop/
 
 RUN mkdir -p /app/hadoop/tmp && \
     hdfs namenode -format && \
     chmod +x $HADOOP_HOME/etc/hadoop/start.sh
 
-ADD WordCount.java mahdiz.big  HdfsReader.java HdfsWriter.java ./
+COPY WordCount.java mahdiz.big  HdfsReader.java HdfsWriter.java ./
 
 ENTRYPOINT $HADOOP_HOME/etc/hadoop/start.sh && /bin/bash

@@ -16,8 +16,7 @@ MY_ROLE="${MY_ROLE:-slave}"
 HOST_NUMBERS=`echo ${HADOOP_HOSTS} | tr -cd , | wc -c`
 let "HOST_NUMBERS=HOST_NUMBERS+1"
 
-if [ ${HOST_NUMBERS} -gt 1 ]
-then
+if [ ${HOST_NUMBERS} -gt 1 ]; then
     # multi node initialization
     IS_SINGLE=false
 else
@@ -26,9 +25,14 @@ else
     IS_SINGLE=true
 fi
 
-echo ${HOST_NUMBERS}
-echo ${IS_SINGLE}
-echo ${MY_ROLE}
+echo "Host Numbers: ${HOST_NUMBERS}"
+if [[ ${IS_SINGLE} == true ]]; then
+    echo "Mode: single-node"
+else
+    echo "Mode: multi-node"
+fi
+echo "Role: ${MY_ROLE}"
+echo ""
 
 service ssh start
 
@@ -57,3 +61,9 @@ if [ "${IS_SINGLE}" == true ]; then
         hdfs dfs -mkdir -p /user/sina/data && \
         hdfs dfs -copyFromLocal /home/mahdiz.big /user/sina/data
 fi
+
+mv ~/.bashrc ~/.bashrc.old
+echo "color_prompt=yes" > ~/.bashrc
+cat ~/.bashrc.old >> ~/.bashrc
+echo 'export JAVA_HOME=$(readlink -f /usr/bin/java | sed "s:/jre/bin/java::")' >> ~/.bashrc
+echo 'export HADOOP_CLASSPATH=${JAVA_HOME}/lib/tools.jar' >> ~/.bashrc
