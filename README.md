@@ -19,7 +19,9 @@ If you want to refresh config files in your image use below command to build you
 docker build -t cnp2 --build-arg RECONFIG=$(date +%s) .
 ```
 
-# Run the image
+
+# Run the image :
+
 There are two ways to run hadoop single-node and multi-node (default config of image is single-node). You can change image 
  behavior with some environment variable and change it to multi-node.
  
@@ -79,3 +81,4 @@ hdfs dfs -ls /user/sina/output
 ```
 
 To see a list of available File System Shell's commands, see [here](http://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/FileSystemShell.html).
+
